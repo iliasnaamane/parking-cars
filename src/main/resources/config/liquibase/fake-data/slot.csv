@@ -1,0 +1,11 @@
+id;type;elec_energy;status;fixed_amount
+1;Gasoline;20;Full;86726
+2;Gasoline;20;Free;38292
+3;Elec;20;Full;73635
+4;Gasoline;20;Free;23451
+5;Elec;20;Free;3116
+6;Elec;20;Free;42710
+7;Elec;20;Full;70435
+8;Elec;20;Full;95519
+9;Elec;20;Full;18270
+10;Elec;20;Free;28983

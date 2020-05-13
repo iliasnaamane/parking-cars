@@ -1,0 +1,35 @@
+entity Slot {
+type Type
+elecEnergy Integer min(20) max(20)
+status Status
+fixedAmount Float
+}
+
+entity Car {
+name String
+type Type
+elecEnergy Integer min(20) max(20)
+}
+
+enum Type {
+Gasoline,
+Elec
+}
+
+enum Status {
+Free,
+Full
+}
+
+relationship OneToOne {
+	Car{slot} to Slot
+}
+
+// Use Data Transfert Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
