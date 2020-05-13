@@ -1,0 +1,131 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Postman",
+		"_postman_id": "654eb587-a7c9-76a0-88ad-311c47fd1aed",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/api/authenticate",
+			"request": {
+				"url": "http://localhost:8080/api/authenticate",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"password\":\"admin\",\"username\":\"admin\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/slots/",
+			"request": {
+				"url": "http://localhost:8080/api/slots/",
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTU4OTQzMzYxMn0.y9cPloUKpVf49XpQhAPiuzdnohVwjKM5FRMUM0KOoI2JOSSzSOFQkEN6ui8798s5yFtQu-a4HsVac7P_LfHhRw",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/cars/",
+			"request": {
+				"url": "http://localhost:8080/api/cars/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTU4OTQxODYyOX0.nbfcNosoW9ddS4nOVmJ1UouPa9agdCfUqEMp1mmdNJULPutMw6prh-KWnxZ7HitqBx2OGI-7tZgDEaQ6YZIyZA",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\n    {\n        \"name\": \"Mercedes\",\n        \"elecEnergy\": 20,\n        \"type\": \"Elec\"\n    }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/slots/",
+			"request": {
+				"url": "http://localhost:8080/api/slots/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTU4OTQxODUwMX0.8VK1T5FtRtN5bWfgnMEZvuqELFI_4Bg0MhLRq_WxwwA49CPM16XN7YENZ97nrlbOBeZBT-PW-9zqNZBkv6RIrQ",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"type\": \"Elec\",\n        \"elecEnergy\": 20,\n        \"status\": \"Free\",\n        \"fixedAmount\": 50\n    }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/api/cars/12",
+			"request": {
+				"url": "http://localhost:8080/api/cars/12",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTU4OTQxODUwMX0.8VK1T5FtRtN5bWfgnMEZvuqELFI_4Bg0MhLRq_WxwwA49CPM16XN7YENZ97nrlbOBeZBT-PW-9zqNZBkv6RIrQ",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\n        \"id\": 12,\n        \"numberHours\": \"20\",\n        \"hourPrice\": \"10\"\n    }"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
