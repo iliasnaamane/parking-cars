@@ -20,12 +20,19 @@ Necessary step to get the bearer token in order to access to other routes.
 
 ### List all slots
 
-### Create new car / Linked to slot if there is free space
+It list all slots
+
+### Create new car
+
+It create a new car and link it to a free slot of same type.
 
 ### Create new slot
 
+It create a new slot.
+
 ### Delete Car / Leaving Process / Return Bill
 
+It delete a car from database, set the slot to free and return the bill.
 
 ## Building for production
 
