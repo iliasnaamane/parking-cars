@@ -10,6 +10,23 @@ To start your application in the dev profile, run:
 
 For further instructions on how to develop with JHipster, have a look at [Using JHipster in development][].
 
+## POSTMAN Collection
+
+A postman collection has been added to the root folder of the project with necessary requests: 
+
+### Authentication
+
+Necessary step to get the bearer token in order to access to other routes.
+
+### List all slots
+
+### Create new car / Linked to slot if there is free space
+
+### Create new slot
+
+### Delete Car / Leaving Process / Return Bill
+
+
 ## Building for production
 
 ### Packaging as jar
