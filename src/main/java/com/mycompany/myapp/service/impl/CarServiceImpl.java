@@ -116,6 +116,7 @@ public class CarServiceImpl implements CarService {
         bill.setId(id);
         bill.setFinalPrice(price);
         bill.setHourPrice(hourPrice);
+        bill.setNumberHours(numberHours);
         return bill;
     }
 }

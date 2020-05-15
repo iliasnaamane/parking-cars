@@ -71,9 +71,8 @@ public class BillDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "CarDTO{" +
+        return "BillDTO{" +
             "id=" +  getId() +
-            ", hourprice='" + getHourPrice()+ "'" +
             ", numberhours='" + getNumberHours()+ "'" +
              ", finalPrice='" + getFinalPrice()+ "'" +
             "}";

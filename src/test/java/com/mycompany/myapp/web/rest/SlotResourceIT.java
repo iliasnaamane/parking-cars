@@ -183,39 +183,6 @@ public class SlotResourceIT {
             .andExpect(status().isNotFound());
     }
 
-    @Test
-    @Transactional
-    public void updateSlot() throws Exception {
-        // Initialize the database
-        slotRepository.saveAndFlush(slot);
-
-        int databaseSizeBeforeUpdate = slotRepository.findAll().size();
-
-        // Update the slot
-        Slot updatedSlot = slotRepository.findById(slot.getId()).get();
-        // Disconnect from session so that the updates on updatedSlot are not directly saved in db
-        em.detach(updatedSlot);
-        updatedSlot
-            .type(UPDATED_TYPE)
-            .elecEnergy(UPDATED_ELEC_ENERGY)
-            .status(UPDATED_STATUS)
-            .fixedAmount(UPDATED_FIXED_AMOUNT);
-        SlotDTO slotDTO = slotMapper.toDto(updatedSlot);
-
-        restSlotMockMvc.perform(put("/api/slots")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(slotDTO)))
-            .andExpect(status().isOk());
-
-        // Validate the Slot in the database
-        List<Slot> slotList = slotRepository.findAll();
-        assertThat(slotList).hasSize(databaseSizeBeforeUpdate);
-        Slot testSlot = slotList.get(slotList.size() - 1);
-        assertThat(testSlot.getType()).isEqualTo(UPDATED_TYPE);
-        assertThat(testSlot.getElecEnergy()).isEqualTo(UPDATED_ELEC_ENERGY);
-        assertThat(testSlot.getStatus()).isEqualTo(UPDATED_STATUS);
-        assertThat(testSlot.getFixedAmount()).isEqualTo(UPDATED_FIXED_AMOUNT);
-    }
 
     @Test
     @Transactional

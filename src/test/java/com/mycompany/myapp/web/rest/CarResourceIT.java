@@ -2,6 +2,8 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.JhipsterApp;
 import com.mycompany.myapp.domain.Car;
+import com.mycompany.myapp.domain.Slot;
+import com.mycompany.myapp.domain.enumeration.Status;
 import com.mycompany.myapp.repository.CarRepository;
 import com.mycompany.myapp.service.CarService;
 import com.mycompany.myapp.service.dto.CarDTO;
@@ -25,6 +27,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.mycompany.myapp.domain.enumeration.Type;
+import com.mycompany.myapp.service.dto.BillDTO;
+import com.mycompany.myapp.service.dto.SlotDTO;
+import com.mycompany.myapp.service.mapper.SlotMapper;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 /**
  * Integration tests for the {@link CarResource} REST controller.
  */
@@ -33,7 +39,9 @@ import com.mycompany.myapp.domain.enumeration.Type;
 @AutoConfigureMockMvc
 @WithMockUser
 public class CarResourceIT {
-
+    
+    private static final Status DEFAULT_STATUS = Status.Free;
+     private static final Float DEFAULT_FIXED_AMOUNT = 1F;
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
@@ -48,17 +56,28 @@ public class CarResourceIT {
 
     @Autowired
     private CarMapper carMapper;
+    
+    @Autowired
+    private SlotMapper slotMapper;
 
     @Autowired
     private CarService carService;
 
     @Autowired
     private EntityManager em;
+    
+    @Autowired
+    private EntityManager emslot;
 
     @Autowired
     private MockMvc restCarMockMvc;
+    
+    @Autowired
+    private MockMvc restSlotMockMvc;
 
     private Car car;
+    
+    private Slot slot;
 
     /**
      * Create an entity for this test.
@@ -72,6 +91,15 @@ public class CarResourceIT {
             .type(DEFAULT_TYPE)
             .elecEnergy(DEFAULT_ELEC_ENERGY);
         return car;
+    }
+    
+        public static Slot createSlotEntity(EntityManager emslot) {
+        Slot slot = new Slot()
+            .type(DEFAULT_TYPE)
+            .elecEnergy(DEFAULT_ELEC_ENERGY)
+            .status(DEFAULT_STATUS)
+            .fixedAmount(DEFAULT_FIXED_AMOUNT);
+        return slot;
     }
     /**
      * Create an updated entity for this test.
@@ -90,13 +118,19 @@ public class CarResourceIT {
     @BeforeEach
     public void initTest() {
         car = createEntity(em);
+        slot = createSlotEntity(emslot);
     }
 
     @Test
     @Transactional
     public void createCar() throws Exception {
         int databaseSizeBeforeCreate = carRepository.findAll().size();
-
+        // Create Slot
+        SlotDTO slotDTO = slotMapper.toDto(slot);
+        restSlotMockMvc.perform(post("/api/slots")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(slotDTO)))
+            .andExpect(status().isCreated());
         // Create the Car
         CarDTO carDTO = carMapper.toDto(car);
         restCarMockMvc.perform(post("/api/cars")
@@ -176,38 +210,6 @@ public class CarResourceIT {
 
     @Test
     @Transactional
-    public void updateCar() throws Exception {
-        // Initialize the database
-        carRepository.saveAndFlush(car);
-
-        int databaseSizeBeforeUpdate = carRepository.findAll().size();
-
-        // Update the car
-        Car updatedCar = carRepository.findById(car.getId()).get();
-        // Disconnect from session so that the updates on updatedCar are not directly saved in db
-        em.detach(updatedCar);
-        updatedCar
-            .name(UPDATED_NAME)
-            .type(UPDATED_TYPE)
-            .elecEnergy(UPDATED_ELEC_ENERGY);
-        CarDTO carDTO = carMapper.toDto(updatedCar);
-
-        restCarMockMvc.perform(put("/api/cars")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(carDTO)))
-            .andExpect(status().isOk());
-
-        // Validate the Car in the database
-        List<Car> carList = carRepository.findAll();
-        assertThat(carList).hasSize(databaseSizeBeforeUpdate);
-        Car testCar = carList.get(carList.size() - 1);
-        assertThat(testCar.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testCar.getType()).isEqualTo(UPDATED_TYPE);
-        assertThat(testCar.getElecEnergy()).isEqualTo(UPDATED_ELEC_ENERGY);
-    }
-
-    @Test
-    @Transactional
     public void updateNonExistingCar() throws Exception {
         int databaseSizeBeforeUpdate = carRepository.findAll().size();
 
@@ -224,19 +226,23 @@ public class CarResourceIT {
         List<Car> carList = carRepository.findAll();
         assertThat(carList).hasSize(databaseSizeBeforeUpdate);
     }
-
-    @Test
-    @Transactional
+    
     public void deleteCar() throws Exception {
         // Initialize the database
         carRepository.saveAndFlush(car);
 
         int databaseSizeBeforeDelete = carRepository.findAll().size();
-
+        
+        BillDTO billDTO = new BillDTO();
+        billDTO.setHourPrice(10);
+        billDTO.setNumberHours(10);
+        billDTO.setId(car.getId());
         // Delete the car
         restCarMockMvc.perform(delete("/api/cars/{id}", car.getId())
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isNoContent());
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(billDTO)))
+            .andExpect(status().isOk());
 
         // Validate the database contains one less item
         List<Car> carList = carRepository.findAll();
